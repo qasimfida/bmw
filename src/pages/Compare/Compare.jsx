@@ -40,7 +40,7 @@ const Compare = () => {
         {compareList.map((car, index) => (
           <div key={car.id} className="bg-bg-card rounded-2xl border border-border-subtle overflow-hidden animate-[fadeInUp_0.5s_ease-out]" style={{ animationDelay: `${index * 0.1}s` }}>
             <div className="h-[280px] relative">
-              <Car3DViewer color={car.colors[0]} autoRotate={true} />
+              <Car3DViewer color={car.colors[0]} autoRotate={true} modelType={car.series.toLowerCase() === 'ferrari' ? 'ferrari' : 'bmw'} />
             </div>
             <div className="p-6">
               <span className="text-[0.875rem] text-bmw-blue-light mb-4 block">{car.series}</span>

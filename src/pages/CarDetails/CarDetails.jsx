@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCarById, fetchCars, selectCarsStatus, selectSelectedColor } from '../../features/cars/carsSlice';
+import { selectCarById, fetchCars, selectCarsStatus, selectSelectedColor, selectBgLightColor, selectRimColor } from '../../features/cars/carsSlice';
 import Car3DViewer from '../../components/Car3DViewer/Car3DViewer';
 import ColorPicker from '../../components/ColorPicker/ColorPicker';
+import SecondaryColorPicker from '../../components/ColorPicker/SecondaryColorPicker';
+import BgColorPicker from '../../components/ColorPicker/BgColorPicker';
+import RimColorPicker from '../../components/ColorPicker/RimColorPicker';
 import Loader from '../../components/Loader/Loader';
 import { LightingCircleIcon, SettingIcon, TimeIcon, DashboardIcon } from 'tdesign-icons-react';
 
@@ -13,6 +16,9 @@ const CarDetails = () => {
   const status = useSelector(selectCarsStatus);
   const car = useSelector(selectCarById(id));
   const selectedColor = useSelector(selectSelectedColor);
+  const secondaryColor = useSelector(state => state.cars.secondaryColor);
+  const bgLightColor = useSelector(selectBgLightColor);
+  const rimColor = useSelector(selectRimColor);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -50,7 +56,7 @@ const CarDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12">
         <div className="w-full">
           <div className="relative rounded-2xl overflow-hidden bg-bg-card border border-border-subtle min-h-[400px] lg:min-h-[500px] lg:sticky lg:top-[92px] animate-[scaleIn_0.5s_ease-out]">
-            <Car3DViewer color={selectedColor || car.colors[0]} autoRotate={true} />
+            <Car3DViewer className="absolute inset-0" color={selectedColor || car.colors[0]} secondaryColor={secondaryColor} bgLightColor={bgLightColor} rimColor={rimColor} autoRotate={true} modelType={car.series.toLowerCase() === 'ferrari' ? 'ferrari' : 'bmw'} />
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[0.75rem] text-text-secondary z-10 pointer-events-none animate-[fadeIn_1s_ease-out_1s_both]">
               Drag to rotate • Scroll to zoom
             </div>
@@ -95,6 +101,9 @@ const CarDetails = () => {
           </div>
 
           <ColorPicker colors={car.colors} />
+          {car.series.toLowerCase() !== 'ferrari' && <SecondaryColorPicker colors={car.colors} />}
+          <RimColorPicker />
+          <BgColorPicker />
         </div>
       </div>
     </div>

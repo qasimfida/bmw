@@ -26,6 +26,9 @@ const initialState = {
     fuelType: '',
   },
   selectedColor: null,
+  secondaryColor: '#ffffff',
+  bgLightColor: 'transparent',
+  rimColor: '#e0e0e0', // Default light silver rims
 };
 
 // Helper to apply filters and search
@@ -86,6 +89,15 @@ const carsSlice = createSlice({
     setSelectedColor: (state, action) => {
       state.selectedColor = action.payload;
     },
+    setSecondaryColor: (state, action) => {
+      state.secondaryColor = action.payload;
+    },
+    setBgLightColor: (state, action) => {
+      state.bgLightColor = action.payload;
+    },
+    setRimColor: (state, action) => {
+      state.rimColor = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,7 +117,7 @@ const carsSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, setFilters, clearFilters, setPage, setSelectedColor } =
+export const { setSearchTerm, setFilters, clearFilters, setPage, setSelectedColor, setSecondaryColor, setBgLightColor, setRimColor } =
   carsSlice.actions;
 
 // Selectors
@@ -118,6 +130,9 @@ export const selectItemsPerPage = (state) => state.cars.itemsPerPage;
 export const selectSearchTerm = (state) => state.cars.searchTerm;
 export const selectFilters = (state) => state.cars.filters;
 export const selectSelectedColor = (state) => state.cars.selectedColor;
+export const selectSecondaryColor = (state) => state.cars.secondaryColor;
+export const selectBgLightColor = (state) => state.cars.bgLightColor;
+export const selectRimColor = (state) => state.cars.rimColor;
 
 export const selectPaginatedCars = (state) => {
   const { filteredList, currentPage, itemsPerPage } = state.cars;
