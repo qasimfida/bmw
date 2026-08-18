@@ -37,7 +37,7 @@ const CarCard = ({ car }) => {
 
   return (
     <div className="group relative bg-bg-card rounded-2xl border border-border-subtle overflow-hidden transition-all duration-300 animate-[fadeInUp_0.5s_ease-out_both] hover:-translate-y-1 hover:border-border-light hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-      <Link to={`/car/${car.id}`} className="absolute inset-0 z-0" aria-label={`View details for ${car.model}`}></Link>
+      <Link to={`/model/${car.id}`} className="absolute inset-0 z-0" aria-label={`View details for ${car.model}`}></Link>
       
       <div className="relative aspect-[16/10] overflow-hidden bg-bg-secondary">
         <img src={car.image} alt={car.model} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy" />
@@ -89,7 +89,7 @@ const CarCard = ({ car }) => {
             <span className="text-lg font-bold text-text-primary">{formatPrice(car.price)}</span>
           </div>
           
-          <Button variant="secondary" size="sm" as={Link} to={`/car/${car.id}`} className="relative z-20">
+          <Button variant="secondary" size="sm" as={Link} to={`/model/${car.id}`} className="relative z-20">
             Explore
           </Button>
         </div>

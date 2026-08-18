@@ -188,8 +188,8 @@ const CarDetails = () => {
         <div className="relative z-10 -mt-[100vh]">
           
           {/* ── CHAPTER 01: HERO VEHICLE INSPECTION ──────────────────────────── */}
-          <section className="h-screen w-full flex items-center justify-between px-6 md:px-16 lg:px-24 pointer-events-auto relative">
-            <div className="max-w-xl flex flex-col items-start justify-center animate-[fadeInUp_0.8s_ease-out] z-20">
+          <section className="min-h-screen pt-24 pb-12 w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-16 lg:px-24 pointer-events-auto relative">
+            <div className="max-w-xl flex flex-col items-start justify-center animate-[fadeInUp_0.8s_ease-out] z-20 mb-8 md:mb-0">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[0.75rem] font-bold text-accent-light mb-4 uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                 {car.series} SERIES · {car.bodyType}
@@ -233,17 +233,17 @@ const CarDetails = () => {
             </div>
 
             {/* Quick Specs Right Card */}
-            <div className="hidden lg:flex flex-col gap-5 p-6 rounded-2xl bg-[#08080A]/60 border border-white/[0.08] backdrop-blur-2xl shadow-2xl z-20 min-w-[180px] text-right">
-              <div>
-                <div className="text-3xl font-black text-white">{car.horsepower}</div>
+            <div className="flex flex-row md:flex-col gap-5 p-6 rounded-2xl bg-[#08080A]/60 border border-white/[0.08] backdrop-blur-2xl shadow-2xl z-20 md:min-w-[180px] text-center md:text-right w-full md:w-auto overflow-x-auto self-end md:self-auto">
+              <div className="flex-1 md:flex-none">
+                <div className="text-2xl md:text-3xl font-black text-white">{car.horsepower}</div>
                 <div className="text-[0.65rem] font-mono uppercase text-text-muted tracking-widest mt-0.5">HORSEPOWER</div>
               </div>
-              <div className="relative pr-3 border-r-2 border-accent">
-                <div className="text-3xl font-black text-white">{car.acceleration}s</div>
+              <div className="relative md:pr-3 md:border-r-2 md:border-t-0 border-t-2 pt-3 md:pt-0 border-accent flex-1 md:flex-none">
+                <div className="text-2xl md:text-3xl font-black text-white">{car.acceleration}s</div>
                 <div className="text-[0.65rem] font-mono uppercase text-text-muted tracking-widest mt-0.5">0-60 MPH</div>
               </div>
-              <div>
-                <div className="text-3xl font-black text-white">{car.topSpeed}</div>
+              <div className="flex-1 md:flex-none">
+                <div className="text-2xl md:text-3xl font-black text-white">{car.topSpeed}</div>
                 <div className="text-[0.65rem] font-mono uppercase text-text-muted tracking-widest mt-0.5">TOP SPEED (MPH)</div>
               </div>
             </div>
@@ -285,6 +285,18 @@ const CarDetails = () => {
                   <div className="text-xl font-bold text-white">{car.topSpeed} MPH</div>
                   <div className="text-[0.65rem] text-text-muted uppercase tracking-wider mt-0.5">Track Velocity</div>
                 </div>
+                {car.engine && (
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] col-span-2">
+                    <div className="text-sm font-bold text-white">{car.engine}</div>
+                    <div className="text-[0.65rem] text-text-muted uppercase tracking-wider mt-0.5">Powertrain</div>
+                  </div>
+                )}
+                {car.transmission && (
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] col-span-2">
+                    <div className="text-sm font-bold text-white">{car.transmission} &middot; {car.weight} lbs</div>
+                    <div className="text-[0.65rem] text-text-muted uppercase tracking-wider mt-0.5">Transmission / Curb Weight</div>
+                  </div>
+                )}
               </div>
             </div>
           </section>

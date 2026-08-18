@@ -393,7 +393,7 @@ const Home = () => {
 
                         {isSelected ? (
                           <Link 
-                            to={`/car/${item.id}`}
+                            to={`/model/${item.id}`}
                             className="mt-2 flex items-center justify-between text-[0.65rem] font-bold uppercase tracking-wider text-accent-light hover:underline"
                           >
                             <span>INSPECT 3D</span>

@@ -11,6 +11,9 @@
     "torque": 479,
     "acceleration": 3.4,
     "topSpeed": 180,
+    "weight": 3830,
+    "engine": "3.0L Twin-Turbo Inline-6",
+    "transmission": "8-Speed M Steptronic",
     "image": "/images/coupe-1.png",
     "colors": ["#1c1c1c", "#ffffff", "#8c9296", "#215e45", "#e6d622", "#0a3161", "#a82b2b", "#1B69D4"],
     "description": "The M4 Competition is a track weapon disguised as a grand tourer. Its twin-turbo inline-6 produces a staggering 503 hp, delivered through an 8-speed M Steptronic transmission with Drivelogic."
@@ -27,6 +30,9 @@
     "torque": 553,
     "acceleration": 3.0,
     "topSpeed": 190,
+    "weight": 4295,
+    "engine": "4.4L Twin-Turbo V8",
+    "transmission": "8-Speed M Steptronic",
     "image": "/images/card-m8.jpg",
     "colors": ["#101114", "#0e3a2f", "#0a1936", "#8b0e14", "#ffffff", "#2c2f33"],
     "description": "The pinnacle of BMW M performance. Powered by a 4.4-liter M TwinPower Turbo V8 engine with 625 hp, sending power through an intelligent M xDrive all-wheel-drive system."
@@ -44,6 +50,9 @@
     "torque": 553,
     "acceleration": 3.1,
     "topSpeed": 190,
+    "weight": 4345,
+    "engine": "4.4L Twin-Turbo V8",
+    "transmission": "8-Speed M Steptronic",
     "image": "/images/card-m5.jpg",
     "colors": ["#0e3a2f", "#1c1c1c", "#0a1936", "#ffffff", "#c2c7cd"],
     "description": "Executive luxury meets motorsport engineering. The M5 Competition blends everyday four-door usability with blistering twin-turbo V8 power and dynamic chassis control."
@@ -60,6 +69,9 @@
     "torque": 748,
     "acceleration": 3.5,
     "topSpeed": 155,
+    "weight": 5920,
+    "engine": "Dual Electric Motors",
+    "transmission": "Single-Speed Automatic",
     "image": "/images/electric-1.png",
     "colors": ["#101114", "#ffffff", "#8c9296", "#0a1936"],
     "description": "The most powerful all-electric BMW sedan ever created. Dual high-performance eDrive motors deliver instantaneous 748 lb-ft torque with an ultra-luxurious rear Theater Screen lounge."
@@ -77,6 +89,9 @@
     "torque": 738,
     "acceleration": 3.7,
     "topSpeed": 175,
+    "weight": 6062,
+    "engine": "4.4L Twin-Turbo V8 Hybrid",
+    "transmission": "8-Speed M Steptronic",
     "image": "/images/suv-1.png",
     "colors": ["#1c1c1c", "#8b0e14", "#ffffff", "#0e3a2f"],
     "description": "The most potent BMW M car in history. A plug-in hybrid powertrain combining an M TwinPower Turbo V8 with an electric motor for an astounding 738 horsepower."
@@ -93,6 +108,9 @@
     "torque": 528,
     "acceleration": 3.3,
     "topSpeed": 193,
+    "weight": 3450,
+    "engine": "6.5L Naturally Aspirated V12",
+    "transmission": "8-Speed Dual-Clutch",
     "image": "/images/sedan-1.png",
     "colors": ["#b71c1c", "#1c1c1c", "#ffffff", "#ffea00"],
     "description": "The ultimate expression of Italian performance. A naturally aspirated V12 engine delivers an unforgettable high-revving symphony with unparalleled aerodynamics."

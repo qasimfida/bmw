@@ -13,7 +13,7 @@ function App() {
       <main className="flex-1 pt-[72px]">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/car/:id" element={<CarDetails />} />
+          <Route path="/model/:id" element={<CarDetails />} />
           <Route path="/compare" element={<Compare />} />
         </Routes>
       </main>

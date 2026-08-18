@@ -28,12 +28,21 @@ const Footer = () => {
           </span>
         </div>
 
-        {/* Center: Clean Navigation Links */}
-        <div className="flex flex-wrap items-center justify-center gap-8 text-[0.8125rem] font-medium tracking-wider uppercase text-text-muted">
-          <a href="#showroom-section" className="hover:text-white transition-colors">Models</a>
-          <a href="#tech-section" className="hover:text-white transition-colors">Technology</a>
-          <a href="#experience-section" className="hover:text-white transition-colors">Experience</a>
-          <Link to="/compare" className="hover:text-white transition-colors">Compare</Link>
+        {/* Center: Clean Navigation Links & Newsletter */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 flex-1">
+          <div className="flex flex-wrap items-center justify-center gap-8 text-[0.8125rem] font-medium tracking-wider uppercase text-text-muted">
+            <a href="/#showroom-section" className="hover:text-white transition-colors">Models</a>
+            <a href="/#tech-section" className="hover:text-white transition-colors">Technology</a>
+            <a href="/#experience-section" className="hover:text-white transition-colors">Experience</a>
+            <Link to="/compare" className="hover:text-white transition-colors">Compare</Link>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <input type="email" placeholder="Subscribe to Newsletter" className="bg-[#0f0f13] border border-white/10 text-white text-xs px-4 py-2 rounded-full focus:outline-none focus:border-accent w-[200px]" />
+            <button className="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer">
+              Join
+            </button>
+          </div>
         </div>
 
         {/* Right: Social Icons */}
@@ -61,6 +70,14 @@ const Footer = () => {
           </div>
         </div>
 
+      </div>
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 mt-8 pt-6 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between text-[0.65rem] text-text-muted">
+        <p>&copy; {new Date().getFullYear()} Machine Motors. All rights reserved.</p>
+        <div className="flex gap-4 mt-4 md:mt-0">
+          <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" className="hover:text-white transition-colors">Legal</a>
+        </div>
       </div>
     </footer>
   );
