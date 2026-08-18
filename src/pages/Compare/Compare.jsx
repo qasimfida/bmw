@@ -20,65 +20,67 @@ const Compare = () => {
 
   if (compareList.length === 0) {
     return (
-      <div className="max-w-[1320px] mx-auto px-5 md:px-8 xl:px-10 py-10 pb-16 animate-[fadeIn_0.4s_ease-out]">
-        <div className="text-center py-20 px-5 animate-[fadeInUp_0.5s_ease-out]">
-          <div className="text-[4rem] mb-4 opacity-50 flex justify-center"><ChartBubbleIcon size="64px" /></div>
-          <h2 className="text-[1.125rem] text-text-secondary mb-2">No vehicles selected for comparison.</h2>
-          <p className="text-[0.875rem] text-text-muted mb-6">Browse the showroom and select up to 2 vehicles to compare them side-by-side.</p>
-          <Button as={Link} to="/" variant="primary" className="mt-5">Go to Showroom</Button>
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 py-16 animate-[fadeIn_0.4s_ease-out]">
+        <div className="text-center py-20 px-5 max-w-md mx-auto">
+          <div className="text-4xl mb-4 opacity-25 flex justify-center text-text-muted"><ChartBubbleIcon size="48px" /></div>
+          <h2 className="text-base font-semibold text-text-primary mb-2">No vehicles in comparison</h2>
+          <p className="text-xs text-text-muted mb-6 leading-relaxed">Select up to 2 vehicles from the showroom to compare specifications side-by-side.</p>
+          <Button as={Link} to="/" variant="primary" size="md">Browse Showroom</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-[1320px] mx-auto px-5 md:px-8 xl:px-10 py-10 pb-16 animate-[fadeIn_0.4s_ease-out]">
-      <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-extrabold tracking-tight mb-2">Compare Vehicles</h1>
-      <p className="text-base text-text-secondary mb-10">Side-by-side spec comparison</p>
+    <div className="max-w-[1280px] mx-auto px-5 md:px-8 py-10 pb-20 animate-[fadeIn_0.4s_ease-out]">
+      <div className="mb-8">
+        <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-1 text-text-primary">Side-by-Side Comparison</h1>
+        <p className="text-xs text-text-muted">Technical telemetry and performance benchmarks</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
         {compareList.map((car, index) => (
-          <div key={car.id} className="bg-bg-card rounded-2xl border border-border-subtle overflow-hidden animate-[fadeInUp_0.5s_ease-out]" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="h-[280px] relative">
+          <div key={car.id} className="bg-bg-card/70 rounded-2xl border border-border-subtle overflow-hidden animate-[fadeInUp_0.4s_ease-out]" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="h-[260px] relative bg-bg-secondary/50">
               <Car3DViewer color={car.colors[0]} autoRotate={true} modelType={car.series.toLowerCase() === 'ferrari' ? 'ferrari' : 'bmw'} />
             </div>
-            <div className="p-6">
-              <span className="text-[0.875rem] text-bmw-blue-light mb-4 block">{car.series}</span>
-              <h2 className="text-xl font-bold mb-1">{car.model}</h2>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="mt-4 -ml-3"
+            <div className="p-5 flex items-center justify-between">
+              <div>
+                <span className="text-[0.7rem] uppercase tracking-wider text-accent-light font-mono block mb-1">{car.series}</span>
+                <h2 className="text-lg font-bold text-text-primary">{car.model}</h2>
+              </div>
+              <button 
+                className="text-xs text-text-muted hover:text-red-400 transition-colors px-3 py-1.5 rounded bg-white/[0.03] hover:bg-red-500/10 cursor-pointer"
                 onClick={() => handleRemove(car.id)}
               >
-                Remove from compare
-              </Button>
+                Remove
+              </button>
             </div>
           </div>
         ))}
 
         {compareList.length === 1 && (
-          <div className="bg-bg-card rounded-2xl border border-dashed border-border-subtle flex flex-col items-center justify-center min-h-[300px] p-6 animate-[fadeInUp_0.5s_ease-out_0.1s]">
-            <div className="text-[2rem] mb-4 opacity-50 flex justify-center"><AddIcon size="48px" /></div>
-            <h3 className="mb-4 text-lg font-semibold">Add a second vehicle</h3>
-            <Button as={Link} to="/" variant="secondary">Browse Models</Button>
+          <div className="bg-bg-card/30 rounded-2xl border border-dashed border-border-subtle flex flex-col items-center justify-center min-h-[260px] p-6 text-center">
+            <div className="text-2xl mb-3 opacity-30 flex justify-center text-text-muted"><AddIcon size="32px" /></div>
+            <h3 className="text-sm font-medium text-text-secondary mb-3">Add a second vehicle</h3>
+            <Button as={Link} to="/" variant="secondary" size="sm">Select Model</Button>
           </div>
         )}
       </div>
 
       {compareList.length > 0 && (
-        <div className="mt-10 rounded-2xl overflow-hidden border border-border-subtle animate-[fadeInUp_0.5s_ease-out_0.2s_both]">
+        <div className="rounded-xl overflow-hidden border border-border-subtle bg-bg-card/50">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse text-left">
               <thead>
-                <tr>
-                  <th className="p-4 md:px-6 bg-bg-elevated text-[0.8125rem] font-semibold text-text-muted uppercase tracking-wider text-left border-b border-border-subtle">Specification</th>
+                <tr className="border-b border-border-subtle bg-bg-elevated/40">
+                  <th className="p-4 text-[0.75rem] font-semibold text-text-muted uppercase tracking-wider">Specification</th>
                   {compareList.map(car => (
-                    <th key={`th-${car.id}`} className="p-4 md:px-6 bg-bg-elevated text-[0.8125rem] font-semibold text-text-muted uppercase tracking-wider text-left border-b border-border-subtle min-w-[150px]">{car.model}</th>
+                    <th key={`th-${car.id}`} className="p-4 text-[0.75rem] font-semibold text-text-primary uppercase tracking-wider min-w-[140px]">{car.model}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-bg-card">
+              <tbody className="divide-y divide-border-subtle text-xs">
                 {[
                   { label: 'Starting MSRP', key: 'price', format: formatPrice, highlight: true },
                   { label: 'Body Type', key: 'bodyType' },
@@ -87,11 +89,11 @@ const Compare = () => {
                   { label: 'Torque', key: 'torque', suffix: ' lb-ft' },
                   { label: '0-60 MPH', key: 'acceleration', suffix: ' sec' },
                   { label: 'Top Speed', key: 'topSpeed', suffix: ' mph' },
-                ].map((row, i, arr) => (
-                  <tr key={row.label}>
-                    <td className={`p-4 md:px-6 text-[0.9375rem] font-medium ${i !== arr.length - 1 ? 'border-b border-border-subtle' : ''}`}>{row.label}</td>
+                ].map((row) => (
+                  <tr key={row.label} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="p-4 font-medium text-text-secondary">{row.label}</td>
                     {compareList.map(car => (
-                      <td key={`${row.label}-${car.id}`} className={`p-4 md:px-6 text-[0.9375rem] font-medium ${i !== arr.length - 1 ? 'border-b border-border-subtle' : ''} ${row.highlight ? 'text-bmw-blue-light font-bold' : ''}`}>
+                      <td key={`${row.label}-${car.id}`} className={`p-4 font-medium ${row.highlight ? 'text-accent-light font-bold text-sm' : 'text-text-primary'}`}>
                         {row.format ? row.format(car[row.key]) : car[row.key]}{row.suffix || ''}
                       </td>
                     ))}

@@ -12,14 +12,14 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative w-full max-w-[480px]">
-      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[1.1rem] pointer-events-none transition-colors duration-150 peer-focus:text-bmw-blue-light z-10">
-        <SearchIcon size="20px" />
+    <div className="relative w-full max-w-[420px]">
+      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none z-10">
+        <SearchIcon size="18px" />
       </span>
       <input 
         type="text" 
-        className="peer w-full py-3.5 pl-11 pr-4 rounded-xl glass-panel text-text-primary text-[0.9375rem] outline-none transition-all duration-150 placeholder:text-text-muted focus:border-bmw-blue focus:shadow-[0_0_0_3px_var(--color-bmw-blue-glow)]" 
-        placeholder="Search models or series..." 
+        className="w-full py-2.5 pl-10 pr-4 rounded-lg bg-bg-input border border-border-subtle text-text-primary text-[0.8125rem] outline-none transition-all duration-200 placeholder:text-text-muted focus:border-accent/40 focus:ring-1 focus:ring-accent/20" 
+        placeholder="Search models..." 
         value={searchTerm}
         onChange={handleChange}
       />

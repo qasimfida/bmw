@@ -26,13 +26,13 @@ const FilterBar = () => {
 
   const hasActiveFilters = filters.series || filters.bodyType || filters.fuelType;
   
-  const selectClasses = "appearance-none py-2.5 pl-3.5 pr-9 rounded-lg glass-panel text-text-primary text-sm font-medium outline-none cursor-pointer transition-all duration-150 min-w-[140px] hover:border-border-accent hover:bg-white/5 focus:border-bmw-blue focus:shadow-[0_0_0_3px_var(--color-bmw-blue-glow)]";
+  const selectClasses = "appearance-none py-2.5 pl-3.5 pr-8 rounded-lg bg-bg-input border border-border-subtle text-text-primary text-[0.8125rem] font-medium outline-none cursor-pointer transition-all duration-200 min-w-[130px] hover:border-border-light focus:border-accent/40 focus:ring-1 focus:ring-accent/20";
   const optionClasses = "bg-bg-elevated text-text-primary";
   const wrapperClasses = "relative";
-  const chevronClasses = "absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-xs pointer-events-none";
+  const chevronClasses = "absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.6rem] pointer-events-none";
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-2.5">
       <div className={wrapperClasses}>
         <select 
           className={selectClasses} 
@@ -77,10 +77,10 @@ const FilterBar = () => {
 
       {hasActiveFilters && (
         <button 
-          className="py-2.5 px-4.5 rounded-lg bg-transparent border border-border-light text-text-secondary text-sm font-medium transition-all duration-150 hover:border-red-500 hover:text-red-500 hover:bg-red-500/10" 
+          className="py-2 px-3.5 rounded-lg bg-transparent border border-transparent text-text-muted text-[0.8125rem] font-medium transition-all duration-200 hover:text-red-400 hover:bg-red-500/[0.06]" 
           onClick={handleClear}
         >
-          Clear All
+          Clear
         </button>
       )}
     </div>

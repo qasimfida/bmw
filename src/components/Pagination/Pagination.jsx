@@ -33,24 +33,25 @@ const Pagination = () => {
     pageNumbers.push(i);
   }
 
-  const btnClasses = "w-10 h-10 rounded-lg flex items-center justify-center bg-bg-card border border-border-subtle text-text-secondary text-sm font-semibold transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed hover:not(:disabled):border-border-accent hover:not(:disabled):text-text-primary hover:not(:disabled):bg-bg-card-hover";
-  const activeBtnClasses = "!bg-bmw-blue !border-bmw-blue !text-white hover:!bg-bmw-blue-light";
-
   return (
-    <div className="flex items-center justify-center gap-2 py-8">
+    <div className="flex items-center justify-center gap-1.5 py-8">
       <button 
-        className={btnClasses} 
+        className="w-9 h-9 rounded-lg flex items-center justify-center text-text-muted text-sm transition-all duration-200 disabled:opacity-20 disabled:cursor-not-allowed hover:text-text-primary hover:bg-white/[0.04]" 
         onClick={handlePrev} 
         disabled={currentPage === 1}
         aria-label="Previous page"
       >
-        <span className="text-[1.1rem]">‹</span>
+        ‹
       </button>
 
       {pageNumbers.map(number => (
         <button
           key={number}
-          className={`${btnClasses} ${currentPage === number ? activeBtnClasses : ''}`}
+          className={`w-9 h-9 rounded-lg flex items-center justify-center text-[0.8125rem] font-medium transition-all duration-200 ${
+            currentPage === number 
+              ? 'bg-accent text-white' 
+              : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04]'
+          }`}
           onClick={() => handlePageClick(number)}
         >
           {number}
@@ -58,12 +59,12 @@ const Pagination = () => {
       ))}
 
       <button 
-        className={btnClasses} 
+        className="w-9 h-9 rounded-lg flex items-center justify-center text-text-muted text-sm transition-all duration-200 disabled:opacity-20 disabled:cursor-not-allowed hover:text-text-primary hover:bg-white/[0.04]" 
         onClick={handleNext} 
         disabled={currentPage === totalPages}
         aria-label="Next page"
       >
-        <span className="text-[1.1rem]">›</span>
+        ›
       </button>
     </div>
   );

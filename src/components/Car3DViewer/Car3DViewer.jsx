@@ -16,20 +16,27 @@ import ferrariUrl from '../../assets/model/ferrari.glb';
 import bmwUrl from '../../assets/model/bmw_m4_competition_m_package.glb';
 
 // ─── Real Car Model ────────────────────────────────────────────────────────
-const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimColor = '#e0e0e0', envMapIntensity = 3, scale = 1.5, position = [0, -0.05, 0], rotation = [0, Math.PI, 0] }) => {
+const CarModel = ({ 
+  url, 
+  bodyColor = '#2f426f', 
+  secondaryColor = '#ffffff', 
+  rimColor = '#e0e0e0', 
+  envMapIntensity = 3.2, 
+  scale = 1.5, 
+  position = [0, -0.05, 0], 
+  rotation = [0, Math.PI, 0] 
+}) => {
   const { scene } = useGLTF(url);
   
   // Clone the scene so we can mutate materials safely
   const copiedScene = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
-    // Traverse the model to apply custom materials
     copiedScene.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
 
-        // Try to identify the body material by name (common names in car models)
         const matName = child.material.name.toLowerCase();
         
         // Match common body paint material names
@@ -43,24 +50,22 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
           matName.includes('caliper') ||
           matName.includes('pillars')
         ) {
-          // If we already replaced it with our custom PhysicalMaterial, just update the color
           if (child.material.isCustomCarPaint) {
             child.material.color.set(bodyColor);
           } else {
-            // First time: replace it
             child.material = new THREE.MeshPhysicalMaterial({
-              name: child.material.name, // Preserve name so the check works next time
+              name: child.material.name,
               color: new THREE.Color(bodyColor),
-              metalness: 0.8,
-              roughness: 0.2,
+              metalness: 0.85,
+              roughness: 0.18,
               clearcoat: 1.0,
-              clearcoatRoughness: 0.05,
+              clearcoatRoughness: 0.04,
               envMapIntensity: envMapIntensity,
             });
             child.material.isCustomCarPaint = true;
           }
         }
-        // Match the massive white side panels and bonnet for secondary color
+        // Match white side panels / livery / bonnet
         else if (
           matName.includes('white41') ||
           matName.includes('livery') ||
@@ -74,7 +79,7 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
             child.material = new THREE.MeshPhysicalMaterial({
               name: child.material.name,
               color: new THREE.Color(secondaryColor),
-              metalness: 0.8,
+              metalness: 0.85,
               roughness: 0.2,
               clearcoat: 1.0,
               clearcoatRoughness: 0.05,
@@ -87,31 +92,30 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
         else if (matName.includes('glass') || matName.includes('window')) {
           if (!child.material.isCustomGlass) {
             child.material = new THREE.MeshPhysicalMaterial({
-              color: '#000000',
-              metalness: 0.9,
-              roughness: 0.1,
+              color: '#08080c',
+              metalness: 0.95,
+              roughness: 0.05,
               transparent: true,
-              opacity: 0.8,
-              transmission: 0.5,
-              ior: 1.5,
-              envMapIntensity: 2,
+              opacity: 0.85,
+              transmission: 0.6,
+              ior: 1.52,
+              envMapIntensity: 2.5,
             });
             child.material.isCustomGlass = true;
           }
         }
-        // Match tires / rubber (ensure we don't accidentally catch rim)
-        // Note: meshesm8rim0011mtl is the tyre rubber on the BMW model
+        // Match tires / rubber
         else if (matName.includes('rubber') || matName.includes('tire') || matName === 'meshesm8rim0011mtl') {
           if (!child.material.isCustomRubber) {
             child.material = new THREE.MeshStandardMaterial({
-              color: '#222222',
-              roughness: 0.8,
-              metalness: 0.1,
+              color: '#1a1a1c',
+              roughness: 0.85,
+              metalness: 0.05,
             });
             child.material.isCustomRubber = true;
           }
         }
-        // Match rims / alloys (in this Ferrari model, it's 'metal_gray')
+        // Match rims / alloys
         else if (
           matName.includes('rim') || 
           matName.includes('alloy') || 
@@ -124,8 +128,8 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
             child.material = new THREE.MeshStandardMaterial({
               name: child.material.name,
               color: new THREE.Color(rimColor),
-              metalness: 0.9,
-              roughness: 0.2,
+              metalness: 0.92,
+              roughness: 0.18,
             });
             child.material.isCustomRim = true;
           }
@@ -134,7 +138,6 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
     });
   }, [copiedScene, bodyColor, secondaryColor, rimColor, envMapIntensity]);
 
-  // Some models are huge or tiny, let's auto-scale/center it roughly
   return (
     <primitive 
       object={copiedScene} 
@@ -145,102 +148,132 @@ const CarModel = ({ url, bodyColor = '#2f426f', secondaryColor = '#ffffff', rimC
   );
 };
 
-// ─── Moving HDR Environment Lights ───────────────────────────────────────────
-const MovingStudioLights = ({ bgColor = '#2de8cd' }) => {
+// ─── Studio Lights with Dynamic Soft Glow ─────────────────────────────────────
+const MovingStudioLights = ({ bgColor = '#2563EB' }) => {
   const light1Ref = useRef();
   const light2Ref = useRef();
-  const light3Ref = useRef();
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     if (light1Ref.current) {
-      light1Ref.current.position.x = Math.sin(t * 0.4) * 5;
-      light1Ref.current.position.z = Math.cos(t * 0.4) * 5;
+      light1Ref.current.position.x = Math.sin(t * 0.3) * 6;
+      light1Ref.current.position.z = Math.cos(t * 0.3) * 6;
     }
     if (light2Ref.current) {
-      light2Ref.current.position.x = Math.sin(t * 0.3 + Math.PI) * 8;
-      light2Ref.current.position.z = Math.cos(t * 0.3 + Math.PI) * 8;
-    }
-    if (light3Ref.current) {
-      light3Ref.current.position.y = 3 + Math.sin(t * 0.5) * 2;
+      light2Ref.current.position.x = Math.sin(t * 0.25 + Math.PI) * 7;
+      light2Ref.current.position.z = Math.cos(t * 0.25 + Math.PI) * 7;
     }
   });
 
   return (
     <>
-      {/* Key light */}
-      <pointLight ref={light1Ref} position={[5, 4, 5]} intensity={4} color="#ffffff" distance={20} />
-      {/* Fill light */}
-      <pointLight ref={light2Ref} position={[-8, 3, -5]} intensity={3} color={bgColor} distance={25} />
-      {/* Top light */}
-      <pointLight ref={light3Ref} position={[0, 5, 0]} intensity={2} color="#e0eeff" distance={15} />
-      {/* Rim light */}
-      <spotLight position={[0, 8, -6]} angle={0.4} penumbra={0.8} intensity={5} color="#6040ff" castShadow />
-      {/* Ambient */}
-      <ambientLight intensity={0.4} color="#ffffff" />
+      {/* Key overhead studio light */}
+      <pointLight ref={light1Ref} position={[5, 4.5, 5]} intensity={4.2} color="#ffffff" distance={25} />
+      {/* Dynamic cool fill/rim light */}
+      <pointLight ref={light2Ref} position={[-7, 3, -5]} intensity={3.0} color={bgColor === 'transparent' ? '#60a5fa' : bgColor} distance={25} />
+      {/* Top softbox */}
+      <pointLight position={[0, 6, 0]} intensity={2.2} color="#f0f4ff" distance={20} />
+      {/* Sharp dramatic rim light */}
+      <spotLight position={[0, 7, -6]} angle={0.45} penumbra={0.8} intensity={4.5} color="#3b82f6" castShadow />
+      {/* Subtle ambient floor bounce */}
+      <ambientLight intensity={0.5} color="#e2e8f0" />
     </>
   );
 };
 
-// ─── Auto-rotating Camera ─────────────────────────────────────────────────────
-const CameraRig = ({ hasInteracted }) => {
-  const { camera } = useThree();
-  const targetRef = useRef(new THREE.Vector3());
-  const timeRef = useRef(0);
-  const startedRef = useRef(false);
-  const startDelayRef = useRef(3.0); // seconds before animation kicks in
+// ─── Scroll-Synchronized Animated Rig ──────────────────────────────────────────
+const ScrollCarRig = ({ scrollProgress = 0, modelType, color, secondaryColor, rimColor }) => {
+  const groupRef = useRef();
+  const targetRotation = useRef(Math.PI * 0.85); // Start at front-3/4 angle
+  const currentRotation = useRef(Math.PI * 0.85);
 
-  useFrame((_, delta) => {
-    if (hasInteracted) {
-      startedRef.current = false;
-      timeRef.current = 0;
-      return;
-    }
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
 
-    startDelayRef.current -= delta;
-    if (startDelayRef.current > 0) return;
-    startedRef.current = true;
+    // Synchronize rotation with scroll:
+    // 0.00 -> Front 3/4 hero view (~150°)
+    // 0.25 -> Transitioning toward Side profile (~90°)
+    // 0.50 -> Sleek Side profile & aero specs (~0°)
+    // 0.75 -> Rear 3/4 diffuser & taillights pass (~ -90° / 270°)
+    // 1.00 -> Full dramatic 360 spin completion back to hero pose
+    const baseAngle = Math.PI * 0.85; // Initial front 3/4 angle
+    const totalRotation = Math.PI * 2.2; // Full smooth spin across the scroll journey
+    targetRotation.current = baseAngle + scrollProgress * totalRotation;
 
-    timeRef.current += delta;
-    const t = timeRef.current;
+    // Smooth inertia interpolation (lerp) for 60fps cinematic fluidity
+    currentRotation.current = THREE.MathUtils.lerp(
+      currentRotation.current,
+      targetRotation.current,
+      Math.min(delta * 6.5, 1)
+    );
 
-    const theta = t / 10;
-    const radius = 6.5;
-    const tx = radius * Math.sin(theta);
-    const tz = radius * Math.cos(theta);
-    const ty = 1.0 + Math.sin(t * 0.25) * 0.4;
+    groupRef.current.rotation.y = currentRotation.current;
 
-    targetRef.current.set(tx, ty, tz);
-    camera.position.lerp(targetRef.current, 0.025);
-    camera.lookAt(0, 0.2, 0);
+    // Subtle gentle floating breath
+    const time = state.clock.getElapsedTime();
+    groupRef.current.position.y = -0.05 + Math.sin(time * 1.2) * 0.02;
+
+    // Subtle responsive camera parallax depth based on scroll — zoomed out to display full car
+    const targetCamY = 1.35 - scrollProgress * 0.35;
+    const targetCamZ = 7.6 - Math.sin(scrollProgress * Math.PI) * 0.7;
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, targetCamY, 0.05);
+    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetCamZ, 0.05);
+    state.camera.lookAt(0, 0.1, 0);
   });
 
-  return null;
+  return (
+    <group ref={groupRef} position={[0, -0.08, 0]}>
+      <React.Suspense fallback={null}>
+        {modelType === 'ferrari' ? (
+          <CarModel 
+            url={ferrariUrl} 
+            bodyColor={color || '#2f426f'} 
+            secondaryColor={secondaryColor} 
+            rimColor={rimColor} 
+            envMapIntensity={3.5} 
+            scale={1.25} 
+            position={[0, -0.05, 0]} 
+            rotation={[0, 0, 0]} 
+          />
+        ) : (
+          <CarModel 
+            url={bmwUrl} 
+            bodyColor={color || '#1B69D4'} 
+            secondaryColor={secondaryColor} 
+            rimColor={rimColor} 
+            envMapIntensity={3.5} 
+            scale={0.42} 
+            position={[0, -0.05, 0]} 
+            rotation={[0, 0, 0]} 
+          />
+        )}
+      </React.Suspense>
+    </group>
+  );
 };
 
-// ─── Floor ────────────────────────────────────────────────────────────────────
+// ─── Studio Floor with Wet Asphalt Reflection ─────────────────────────────────
 const StudioFloor = ({ bgColor }) => {
   const col = useMemo(() => {
-    const c = new THREE.Color(bgColor);
-    // Darken slightly, but not to pitch black
-    c.multiplyScalar(0.2);
+    const c = new THREE.Color(bgColor === 'transparent' ? '#08080a' : bgColor);
+    c.multiplyScalar(0.18);
     return c;
   }, [bgColor]);
   
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.68, 0]} receiveShadow>
-      <planeGeometry args={[100, 100]} />
+      <planeGeometry args={[80, 80]} />
       <MeshReflectorMaterial
         blur={[400, 100]}
         resolution={1024}
-        mixBlur={0.8}
-        mixStrength={0.6}
-        roughness={0.9}
+        mixBlur={0.85}
+        mixStrength={0.7}
+        roughness={0.88}
         depthScale={1.2}
         minDepthThreshold={0.4}
         maxDepthThreshold={1.4}
         color={col}
-        metalness={0.0}
+        metalness={0.1}
       />
     </mesh>
   );
@@ -255,88 +288,106 @@ const Car3DViewer = ({
   autoRotate = true,
   autoRotateSpeed = 1.2,
   className = '',
-  modelType,
+  modelType = 'bmw',
+  scrollProgress = undefined, // When supplied, activates synchronized scroll animation
 }) => {
-  const [randomModel] = useState(() => Math.random() > 0.5 ? 'ferrari' : 'bmw');
-  const activeModelType = modelType || randomModel;
-  
+  const isScrollDriven = scrollProgress !== undefined;
   const [hasInteracted, setHasInteracted] = useState(false);
   const controlsRef = useRef();
 
-  const handleStart = () => {
-    setHasInteracted(true);
-  };
-  const handleEnd = () => {
-    // Intentionally leaving this empty as we don't want it to resume
-  };
-
   return (
-    <div className={`w-full h-full min-h-[400px] ${className}`} style={{ background: 'transparent' }}>
+    <div className={`w-full h-full min-h-[380px] ${className}`} style={{ background: 'transparent' }}>
       <Canvas
         shadows
         dpr={[1, 2]}
-        camera={{ position: [5, 1.8, 6], fov: 30, near: 0.1, far: 200 }}
+        camera={{ position: [5.2, 1.4, 7.6], fov: 28, near: 0.1, far: 200 }}
         gl={{
           antialias: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.1,
+          toneMappingExposure: 1.15,
+          powerPreference: "high-performance",
         }}
       >
         {bgLightColor !== 'transparent' && <color attach="background" args={[bgLightColor]} />}
-        {bgLightColor !== 'transparent' && <fog attach="fog" args={[bgLightColor, 10, 35]} />}
+        {bgLightColor !== 'transparent' && <fog attach="fog" args={[bgLightColor, 12, 40]} />}
 
-        {/* Lights */}
-        <MovingStudioLights bgColor={bgLightColor === 'transparent' ? '#ffffff' : bgLightColor} />
+        {/* Dynamic Studio Lighting */}
+        <MovingStudioLights bgColor={bgLightColor} />
 
-        {/* Environment */}
-        <Environment preset="studio" environmentIntensity={0.6} />
+        {/* High-end Environment Map */}
+        <Environment preset="studio" environmentIntensity={0.65} />
 
-        {/* Floor */}
-        {bgLightColor !== 'transparent' && <StudioFloor bgColor={bgLightColor} />}
+        {/* Studio Floor */}
+        <StudioFloor bgColor={bgLightColor} />
 
-        {/* Real Car Model */}
-        <Float floatIntensity={0.08} speed={1.2} rotationIntensity={0.04}>
-          {/* We use React.Suspense so the scene waits for the GLTF to load */}
-          <React.Suspense fallback={null}>
-            {activeModelType === 'ferrari' ? (
-              <CarModel url={ferrariUrl} bodyColor={color || '#2f426f'} secondaryColor={secondaryColor} rimColor={rimColor} envMapIntensity={3.5} scale={1.5} position={[0, -0.05, 0]} rotation={[0, Math.PI, 0]} />
-            ) : (
-              <CarModel url={bmwUrl} bodyColor={color || '#1B69D4'} secondaryColor={secondaryColor} rimColor={rimColor} envMapIntensity={3.5} scale={0.5} position={[0, -0.05, 0]} rotation={[0, Math.PI, 0]} />
-            )}
-          </React.Suspense>
-        </Float>
+        {/* Real Car Model with Scroll Animation or Interactive Float */}
+        {isScrollDriven ? (
+          <ScrollCarRig 
+            scrollProgress={scrollProgress} 
+            modelType={modelType} 
+            color={color} 
+            secondaryColor={secondaryColor} 
+            rimColor={rimColor} 
+          />
+        ) : (
+          <Float floatIntensity={0.06} speed={1.2} rotationIntensity={0.03}>
+            <React.Suspense fallback={null}>
+              {modelType === 'ferrari' ? (
+                <CarModel 
+                  url={ferrariUrl} 
+                  bodyColor={color || '#2f426f'} 
+                  secondaryColor={secondaryColor} 
+                  rimColor={rimColor} 
+                  envMapIntensity={3.5} 
+                  scale={1.5} 
+                  position={[0, -0.05, 0]} 
+                  rotation={[0, Math.PI, 0]} 
+                />
+              ) : (
+                <CarModel 
+                  url={bmwUrl} 
+                  bodyColor={color || '#1B69D4'} 
+                  secondaryColor={secondaryColor} 
+                  rimColor={rimColor} 
+                  envMapIntensity={3.5} 
+                  scale={0.5} 
+                  position={[0, -0.05, 0]} 
+                  rotation={[0, Math.PI, 0]} 
+                />
+              )}
+            </React.Suspense>
+          </Float>
+        )}
 
-        {/* Contact shadow */}
+        {/* Realistic Contact Shadow */}
         <ContactShadows
           resolution={1024}
           scale={10}
-          blur={2.5}
-          opacity={0.6}
+          blur={2.2}
+          opacity={0.7}
           far={8}
           color="#000000"
           position={[0, -0.675, 0]}
         />
 
-        {/* Ambient sparkles */}
-        <Sparkles count={60} scale={7} size={1.5} speed={0.2} opacity={0.15} color={bgLightColor} />
+        {/* Ambient Subtle Sparkles */}
+        <Sparkles count={40} scale={8} size={1.2} speed={0.2} opacity={0.15} color={bgLightColor === 'transparent' ? '#93c5fd' : bgLightColor} />
 
-        {/* Camera auto-animation */}
-        <CameraRig hasInteracted={hasInteracted} />
-
-        {/* Controls */}
-        <OrbitControls
-          ref={controlsRef}
-          enablePan={false}
-          minPolarAngle={Math.PI / 6}
-          maxPolarAngle={Math.PI / 2.2}
-          minDistance={3.5}
-          maxDistance={12}
-          onStart={handleStart}
-          onEnd={handleEnd}
-          autoRotate={!hasInteracted && autoRotate}
-          autoRotateSpeed={autoRotateSpeed}
-          target={[0, 0.1, 0]}
-        />
+        {/* Orbit Controls (Active when not scroll-driven) */}
+        {!isScrollDriven && (
+          <OrbitControls
+            ref={controlsRef}
+            enablePan={false}
+            minPolarAngle={Math.PI / 6}
+            maxPolarAngle={Math.PI / 2.15}
+            minDistance={3.2}
+            maxDistance={12}
+            onStart={() => setHasInteracted(true)}
+            autoRotate={!hasInteracted && autoRotate}
+            autoRotateSpeed={autoRotateSpeed}
+            target={[0, 0.15, 0]}
+          />
+        )}
       </Canvas>
     </div>
   );

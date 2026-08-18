@@ -1,74 +1,131 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bmw-blue: #1B69D4;
-  --color-bmw-blue-light: #3d8bef;
-  --color-bmw-blue-dark: #0f4fa3;
-  --color-bmw-blue-glow: rgba(27, 105, 212, 0.4);
-  --color-bmw-blue-subtle: rgba(27, 105, 212, 0.1);
+  /* ── Accent ── */
+  --color-accent: #2563EB;
+  --color-accent-light: #60A5FA;
+  --color-accent-dark: #1D4ED8;
+  --color-accent-glow: rgba(37, 99, 235, 0.25);
+  --color-accent-subtle: rgba(37, 99, 235, 0.08);
 
-  --color-bg-primary: #06060b;
-  --color-bg-secondary: #0c0c14;
-  --color-bg-card: #10101a;
-  --color-bg-card-hover: #161625;
-  --color-bg-elevated: #1a1a2e;
-  
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-light: rgba(255, 255, 255, 0.1);
-  --color-border-accent: rgba(27, 105, 212, 0.3);
+  /* ── Backgrounds ── */
+  --color-bg-primary: #08080A;
+  --color-bg-secondary: #0C0C0E;
+  --color-bg-card: #111113;
+  --color-bg-card-hover: #161618;
+  --color-bg-elevated: #1A1A1C;
+  --color-bg-input: #0E0E10;
 
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #9494a8;
-  --color-text-muted: #5a5a72;
+  /* ── Borders ── */
+  --color-border-subtle: rgba(255, 255, 255, 0.04);
+  --color-border-light: rgba(255, 255, 255, 0.07);
+  --color-border-accent: rgba(37, 99, 235, 0.2);
 
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ── Text ── */
+  --color-text-primary: #F5F5F7;
+  --color-text-secondary: #8E8E93;
+  --color-text-muted: #48484A;
+
+  /* ── Font ── */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 @layer base {
   body {
-    @apply bg-bg-primary text-text-primary font-inter min-h-screen overflow-x-hidden antialiased;
+    @apply bg-bg-primary text-text-primary font-sans min-h-screen overflow-x-hidden antialiased;
+  }
+
+  *, *::before, *::after {
+    @apply box-border;
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-[rgba(16,16,26,0.7)] backdrop-blur-[20px] border border-border-subtle;
-  }
-  
-  .glass-panel-light {
-    @apply bg-[rgba(26,26,46,0.5)] backdrop-blur-[10px] border border-border-light;
+    background: rgba(17, 17, 19, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-bmw-blue-light to-blue-400;
-  }
-
-  .animate-spin-slow {
-    animation: spin 3s linear infinite;
-  }
-
-  .animate-pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-light to-accent;
   }
 }
 
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 5px var(--color-bmw-blue-glow); }
-  50% { box-shadow: 0 0 20px var(--color-bmw-blue-glow), 0 0 40px rgba(27, 105, 212, 0.2); }
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Scrollbar */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-light);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.15);
 }
