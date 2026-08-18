@@ -41,7 +41,7 @@ const SHOWROOM_MODELS = [
     hp: '617 HP', 
     price: '$107,900', 
     img: '/images/card-m5.jpg', 
-    modelType: 'bmw',
+    modelType: 'ferrari',
     hex: '#0e3a2f',
     glowColor: '#10b981',
     bgGradient: 'from-[#0a3528]/45 via-[#061f18]/65 to-[#060608]',
@@ -80,7 +80,7 @@ const SHOWROOM_MODELS = [
     hp: '738 HP', 
     price: '$185,000', 
     img: '/images/suv-1.png', 
-    modelType: 'bmw',
+    modelType: 'ferrari',
     hex: '#8b0e14',
     glowColor: '#ef4444',
     bgGradient: 'from-[#4a0808]/45 via-[#210505]/65 to-[#060608]',
@@ -119,7 +119,7 @@ const Home = () => {
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeChapter, setActiveChapter] = useState(1);
-  const [selectedModelIdx, setSelectedModelIdx] = useState(1); // M8 default
+  const [selectedModelIdx, setSelectedModelIdx] = useState(2); // M8 default
   const [activeTechModal, setActiveTechModal] = useState(null);
   const [isEngineRunning, setIsEngineRunning] = useState(false);
 
@@ -177,12 +177,14 @@ const Home = () => {
   };
 
   const handleToggleEngine = () => {
-    const running = soundEngine.toggleEngine();
+    const engineType = currentCarModel === 'ferrari' ? 'v12' : 'v8';
+    const running = soundEngine.toggleEngine(engineType);
     setIsEngineRunning(running);
   };
 
   const handleRevEngine = () => {
-    soundEngine.revEngine();
+    const engineType = currentCarModel === 'ferrari' ? 'v12' : 'v8';
+    soundEngine.revEngine(engineType);
     setIsEngineRunning(true);
   };
 
@@ -312,7 +314,7 @@ const Home = () => {
 
           {/* ── SECTION 02: CHOOSE YOUR MACHINE + DIGITAL SHOWROOM & CONFIGURATOR ── */}
           <section id="showroom-section" className="min-h-screen w-full flex flex-col justify-center px-6 md:px-16 py-20 pointer-events-auto">
-            <div className="max-w-[1400px] w-full mx-auto flex flex-col justify-center">
+            <div className={`max-w-[1400px] w-full mx-auto flex flex-col justify-center transition-all duration-1000 transform ${activeChapter >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
               
               {/* Header: Choose Your Machine */}
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
@@ -463,7 +465,7 @@ const Home = () => {
           {/* ── SECTION 03: PERFORMANCE ("POWER REDEFINED") ──────────────────── */}
           <section id="perf-section" className="h-screen w-full flex flex-col justify-between py-20 px-6 md:px-16 pointer-events-auto">
             
-            <div className="max-w-md">
+            <div className={`max-w-md transition-all duration-1000 delay-100 transform ${activeChapter >= 3 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
               <div className="flex items-center gap-2 text-xs font-mono font-semibold text-accent-light uppercase tracking-widest mb-1">
                 <span>03</span>
                 <span>·</span>
@@ -485,7 +487,7 @@ const Home = () => {
             </div>
 
             {/* Bottom Floating Stats Bar */}
-            <div className="w-full max-w-5xl mx-auto rounded-2xl bg-[#08080A]/75 border border-white/[0.08] backdrop-blur-2xl p-6 shadow-2xl">
+            <div className={`w-full max-w-5xl mx-auto rounded-2xl bg-[#08080A]/75 border border-white/[0.08] backdrop-blur-2xl p-6 shadow-2xl transition-all duration-1000 delay-300 transform ${activeChapter >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08] text-center">
                 <div className="flex flex-col items-center">
                   <div className="text-2xl md:text-3xl font-extrabold text-white">503</div>
@@ -514,7 +516,7 @@ const Home = () => {
 
           {/* ── SECTION 04: TECHNOLOGY ("BUILT WITH INTELLIGENCE") ────────────── */}
           <section id="tech-section" className="h-screen w-full flex items-center justify-center px-6 md:px-16 pointer-events-auto">
-            <div className="max-w-[1400px] w-full mx-auto flex flex-col justify-center">
+            <div className={`max-w-[1400px] w-full mx-auto flex flex-col justify-center transition-all duration-1000 transform ${activeChapter >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
               
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                 <div>
@@ -574,7 +576,7 @@ const Home = () => {
 
           {/* ── SECTION 05: THE MACHINE ("THE MACHINE IS YOURS.") ─────────────── */}
           <section id="experience-section" className="h-screen w-full flex items-center justify-between px-6 md:px-16 lg:px-24 pointer-events-auto">
-            <div className="max-w-xl z-20">
+            <div className={`max-w-xl z-20 transition-all duration-1000 transform ${activeChapter >= 5 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
               <div className="flex items-center gap-2 text-xs font-mono font-semibold text-accent-light uppercase tracking-widest mb-2">
                 <span>05</span>
                 <span>·</span>
@@ -602,11 +604,11 @@ const Home = () => {
                 <button
                   id="btn-exp-rev"
                   onClick={handleRevEngine}
-                  className="flex items-center gap-2.5 px-5 py-3.5 rounded-full bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 text-xs uppercase font-semibold text-white transition-all cursor-pointer backdrop-blur-md"
+                  className={`flex items-center gap-2.5 px-5 py-3.5 rounded-full ${isEngineRunning ? 'bg-accent/20 border-accent text-accent-light' : 'bg-white/[0.04] hover:bg-white/[0.09] border-white/15 text-white'} border text-xs uppercase font-semibold transition-all cursor-pointer backdrop-blur-md`}
                   title="Rev Twin-Turbo V8"
                 >
                   <span>🔊</span>
-                  <span>Rev V8 Engine</span>
+                  <span>{isEngineRunning ? 'ENGINE RUNNING' : 'START ENGINE'}</span>
                 </button>
               </div>
             </div>

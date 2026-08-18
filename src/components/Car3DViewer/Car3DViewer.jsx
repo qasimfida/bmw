@@ -24,7 +24,8 @@ const CarModel = ({
   envMapIntensity = 3.2, 
   scale = 1.5, 
   position = [0, -0.05, 0], 
-  rotation = [0, Math.PI, 0] 
+  rotation = [0, Math.PI, 0],
+  isEngineRunning = false
 }) => {
   const { scene } = useGLTF(url);
   
@@ -136,7 +137,7 @@ const CarModel = ({
         }
       }
     });
-  }, [copiedScene, bodyColor, secondaryColor, rimColor, envMapIntensity]);
+  }, [copiedScene, bodyColor, secondaryColor, rimColor, envMapIntensity, isEngineRunning]);
 
   return (
     <primitive 
@@ -154,14 +155,15 @@ const MovingStudioLights = ({ bgColor = '#2563EB' }) => {
   const light2Ref = useRef();
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
+    // Very slow rotation to prevent "blinking" but maintain dynamic studio reflections
+    const t = clock.getElapsedTime() * 0.15;
     if (light1Ref.current) {
-      light1Ref.current.position.x = Math.sin(t * 0.3) * 6;
-      light1Ref.current.position.z = Math.cos(t * 0.3) * 6;
+      light1Ref.current.position.x = Math.sin(t) * 6;
+      light1Ref.current.position.z = Math.cos(t) * 6;
     }
     if (light2Ref.current) {
-      light2Ref.current.position.x = Math.sin(t * 0.25 + Math.PI) * 7;
-      light2Ref.current.position.z = Math.cos(t * 0.25 + Math.PI) * 7;
+      light2Ref.current.position.x = Math.sin(t + Math.PI) * 7;
+      light2Ref.current.position.z = Math.cos(t + Math.PI) * 7;
     }
   });
 
@@ -182,7 +184,7 @@ const MovingStudioLights = ({ bgColor = '#2563EB' }) => {
 };
 
 // ─── Scroll-Synchronized Animated Rig ──────────────────────────────────────────
-const ScrollCarRig = ({ scrollProgress = 0, modelType, color, secondaryColor, rimColor }) => {
+const ScrollCarRig = ({ scrollProgress = 0, modelType, color, secondaryColor, rimColor, isEngineRunning }) => {
   const groupRef = useRef();
   const targetRotation = useRef(Math.PI * 0.85); // Start at front-3/4 angle
   const currentRotation = useRef(Math.PI * 0.85);
@@ -234,6 +236,7 @@ const ScrollCarRig = ({ scrollProgress = 0, modelType, color, secondaryColor, ri
             scale={1.25} 
             position={[0, -0.05, 0]} 
             rotation={[0, 0, 0]} 
+            isEngineRunning={isEngineRunning}
           />
         ) : (
           <CarModel 
@@ -245,6 +248,7 @@ const ScrollCarRig = ({ scrollProgress = 0, modelType, color, secondaryColor, ri
             scale={0.42} 
             position={[0, -0.05, 0]} 
             rotation={[0, 0, 0]} 
+            isEngineRunning={isEngineRunning}
           />
         )}
       </React.Suspense>
@@ -290,6 +294,7 @@ const Car3DViewer = ({
   className = '',
   modelType = 'bmw',
   scrollProgress = undefined, // When supplied, activates synchronized scroll animation
+  isEngineRunning = false,
 }) => {
   const isScrollDriven = scrollProgress !== undefined;
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -328,6 +333,7 @@ const Car3DViewer = ({
             color={color} 
             secondaryColor={secondaryColor} 
             rimColor={rimColor} 
+            isEngineRunning={isEngineRunning}
           />
         ) : (
           <Float floatIntensity={0.06} speed={1.2} rotationIntensity={0.03}>
@@ -342,6 +348,7 @@ const Car3DViewer = ({
                   scale={1.5} 
                   position={[0, -0.05, 0]} 
                   rotation={[0, Math.PI, 0]} 
+                  isEngineRunning={isEngineRunning}
                 />
               ) : (
                 <CarModel 
@@ -353,6 +360,7 @@ const Car3DViewer = ({
                   scale={0.5} 
                   position={[0, -0.05, 0]} 
                   rotation={[0, Math.PI, 0]} 
+                  isEngineRunning={isEngineRunning}
                 />
               )}
             </React.Suspense>

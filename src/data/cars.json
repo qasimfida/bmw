@@ -33,6 +33,7 @@
   },
   {
     "id": 3,
+    "modelType": "ferrari",
     "series": "M5",
     "model": "M5 Competition",
     "bodyType": "Sedan",
@@ -65,6 +66,7 @@
   },
   {
     "id": 5,
+    "modelType": "ferrari",
     "series": "XM",
     "model": "XM Label Red",
     "bodyType": "SUV",

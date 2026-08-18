@@ -76,12 +76,14 @@ const CarDetails = () => {
   };
 
   const handleToggleEngine = () => {
-    const running = soundEngine.toggleEngine();
+    const engineType = (car.modelType === 'ferrari' || car.series.toLowerCase() === 'ferrari') ? 'v12' : 'v8';
+    const running = soundEngine.toggleEngine(engineType);
     setIsEngineRunning(running);
   };
 
   const handleRevEngine = () => {
-    soundEngine.revEngine();
+    const engineType = (car.modelType === 'ferrari' || car.series.toLowerCase() === 'ferrari') ? 'v12' : 'v8';
+    soundEngine.revEngine(engineType);
     setIsEngineRunning(true);
   };
 
@@ -176,7 +178,7 @@ const CarDetails = () => {
               secondaryColor={secondaryColor || '#ffffff'}
               rimColor={rimColor || '#e0e0e0'}
               bgLightColor={bgLightColor}
-              modelType={car.series.toLowerCase() === 'ferrari' ? 'ferrari' : 'bmw'}
+              modelType={car.modelType || (car.series.toLowerCase() === 'ferrari' ? 'ferrari' : 'bmw')}
               autoRotate={isFreeOrbit}
             />
           </div>
