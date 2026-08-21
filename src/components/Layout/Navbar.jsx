@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { selectCompareList } from '../../features/compare/compareSlice';
 import { soundEngine } from '../../utils/audioEngine';
@@ -42,7 +43,12 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-[72px] z-50 bg-[#060608]/85 backdrop-blur-xl border-b border-white/[0.06] transition-all duration-300">
+    <motion.header 
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      className="fixed top-0 left-0 right-0 h-[72px] z-50 bg-[#060608]/85 backdrop-blur-xl border-b border-white/[0.06] transition-colors duration-300"
+    >
       <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-6 md:px-12">
         
         {/* Left: Official Brand Logo & Wordmark */}
@@ -65,29 +71,35 @@ const Navbar = () => {
         
         {/* Center: Navigation Links with dropdown chevrons */}
         <nav className="hidden md:flex items-center gap-8 text-[0.8125rem] font-medium tracking-wider text-text-secondary uppercase">
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.05, color: '#fff' }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection('showroom-section')} 
-            className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>Models</span>
             <span className="text-[0.6rem] opacity-60">▾</span>
-          </button>
+          </motion.button>
 
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.05, color: '#fff' }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection('tech-section')} 
-            className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>Technology</span>
             <span className="text-[0.6rem] opacity-60">▾</span>
-          </button>
+          </motion.button>
 
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.05, color: '#fff' }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection('experience-section')} 
-            className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>Experience</span>
             <span className="text-[0.6rem] opacity-60">▾</span>
-          </button>
+          </motion.button>
         </nav>
 
         {/* Right: Actions (Compare, Search, and START ENGINE Ignition Button) */}
@@ -104,20 +116,24 @@ const Navbar = () => {
             )}
           </Link>
 
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.1, color: '#fff' }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => scrollToSection('showroom-section')}
-            className="text-text-secondary hover:text-white transition-colors p-1 cursor-pointer"
+            className="text-text-secondary transition-colors p-1 cursor-pointer"
             title="Search fleet"
           >
             <SearchIcon size="18px" />
-          </button>
+          </motion.button>
 
           {/* ── M START / STOP ENGINE BUTTON ─────────────────────────────────── */}
           <div className="flex items-center gap-1.5">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.95 }}
               id="btn-nav-start-engine"
               onClick={handleEngineClick}
-              className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer active:scale-95 shadow-lg ${
+              className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-lg ${
                 isEngineRunning
                   ? isRevving
                     ? 'bg-red-600 text-white border-red-400 shadow-[0_0_25px_rgba(239,68,68,0.8)] scale-105 animate-pulse'
@@ -135,7 +151,7 @@ const Navbar = () => {
               <span className="tracking-widest">
                 {isEngineRunning ? (isRevving ? 'REVVING V8!' : 'REV THROTTLE') : 'START ENGINE'}
               </span>
-            </button>
+            </motion.button>
 
             {/* Quick Stop Button (Visible when engine is active) */}
             {isEngineRunning && (
@@ -152,7 +168,7 @@ const Navbar = () => {
         </div>
 
       </div>
-    </header>
+    </motion.header>
   );
 };
 

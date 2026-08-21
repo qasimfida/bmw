@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { 
   fetchCars, 
   selectPaginatedCars, 
@@ -191,7 +192,12 @@ const Home = () => {
   const currentCarModel = SHOWROOM_MODELS[selectedModelIdx]?.modelType || 'bmw';
 
   return (
-    <div className="w-full relative bg-[#060608] text-text-primary selection:bg-accent selection:text-white">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="w-full relative bg-[#050505] text-text-primary selection:bg-accent selection:text-white"
+    >
       
       {/* ── CINEMATIC 3D SCROLL STORYTELLING CONTAINER ────────────────────────── */}
       <div ref={scrollContainerRef} className="relative w-full h-[620vh]">
@@ -246,7 +252,12 @@ const Home = () => {
           <section className="h-screen w-full flex items-center justify-between px-6 md:px-16 lg:px-24 pointer-events-auto relative">
             
             {/* Left Hero Text Block */}
-            <div className="max-w-xl flex flex-col items-start justify-center animate-[fadeInUp_0.8s_ease-out] z-20">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, type: 'spring' }}
+              className="max-w-xl flex flex-col items-start justify-center z-20"
+            >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[0.75rem] font-bold text-accent-light mb-6 tracking-wider uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                 2026 COLLECTION
@@ -255,7 +266,7 @@ const Home = () => {
               <h1 className="text-[clamp(2.75rem,7vw,5.5rem)] font-extrabold tracking-tight leading-[0.95] mb-5 text-white uppercase">
                 THE ULTIMATE <br />
                 DRIVING <br />
-                <span className="text-gradient drop-shadow-[0_0_35px_rgba(37,99,235,0.4)]">
+                <span className="text-gradient drop-shadow-[0_0_35px_rgba(99,102,241,0.4)]">
                   MACHINE
                 </span>
               </h1>
@@ -265,21 +276,28 @@ const Home = () => {
               </p>
 
               <div className="flex items-center gap-4">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   id="btn-hero-explore"
                   onClick={() => scrollToSection('showroom-section')}
-                  className="group flex items-center gap-3 px-6 py-3.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/15 text-xs uppercase font-semibold tracking-wider text-white transition-all active:scale-[0.97] cursor-pointer backdrop-blur-md hover:border-accent"
+                  className="group flex items-center gap-3 px-6 py-3.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/15 text-xs uppercase font-semibold tracking-wider text-white transition-all cursor-pointer backdrop-blur-md hover:border-accent"
                 >
                   <span>EXPLORE MODELS</span>
                   <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-accent transition-colors">
                     →
                   </span>
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Hero Specs HUD Card */}
-            <div className="hidden lg:flex flex-col gap-6 p-6 rounded-2xl bg-[#08080A]/60 border border-white/[0.08] backdrop-blur-2xl shadow-2xl z-20 min-w-[170px] text-right">
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.8, type: 'spring' }}
+              className="hidden lg:flex flex-col gap-6 p-6 rounded-2xl bg-[#0a0a0a]/60 border border-white/[0.08] backdrop-blur-2xl shadow-2xl z-20 min-w-[170px] text-right"
+            >
               <div>
                 <div className="text-3xl font-black text-white tracking-tight">503</div>
                 <div className="text-[0.65rem] font-mono uppercase text-text-muted tracking-widest mt-0.5">HP</div>
@@ -294,7 +312,7 @@ const Home = () => {
                 <div className="text-3xl font-black text-white tracking-tight">155</div>
                 <div className="text-[0.65rem] font-mono uppercase text-text-muted tracking-widest mt-0.5">TOP SPEED</div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Bottom Hero HUD Elements */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[0.7rem] uppercase tracking-widest font-mono text-text-muted animate-bounce pointer-events-none">
@@ -642,7 +660,7 @@ const Home = () => {
         </div>
       )}
 
-    </div>
+    </motion.div>
   );
 };
 

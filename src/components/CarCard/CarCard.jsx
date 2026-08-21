@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCompare, removeFromCompare, selectIsInCompare, selectCompareList } from '../../features/compare/compareSlice';
 import Button from '../Button/Button';
@@ -36,7 +37,14 @@ const CarCard = ({ car }) => {
   };
 
   return (
-    <div className="group relative bg-bg-card rounded-2xl border border-border-subtle overflow-hidden transition-all duration-300 animate-[fadeInUp_0.5s_ease-out_both] hover:-translate-y-1 hover:border-border-light hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
+      className="group relative bg-bg-card rounded-2xl border border-border-subtle overflow-hidden transition-all duration-300 hover:border-border-light hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+    >
       <Link to={`/model/${car.id}`} className="absolute inset-0 z-0" aria-label={`View details for ${car.model}`}></Link>
       
       <div className="relative aspect-[16/10] overflow-hidden bg-bg-secondary">
@@ -94,7 +102,7 @@ const CarCard = ({ car }) => {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
